@@ -42,12 +42,22 @@
 </thead>
 <tbody>
 % for my $dist (@{$dists}) {
-<tr><td><a href="/dist/<%= $dist->{dist} %>" title="version <%= $dist->{version} %> (released on <%= $dist->{released} %>)"><%= $dist->{dist} %></a></td><td><%= defined $dist->{kwalitee}{kwalitee} ? sprintf('%3.3f', $dist->{kwalitee}{kwalitee}) : '' %></td><td>
-% if (defined $dist->{kwalitee}{kwalitee}) {
-%   for my $metric (@{ $dist->{metrics} || [] }) {
-<span style="background-color: <%= $metric->{value} ? 'green' : $metric->{is_extra} ? 'orange' : 'red' %>; display: inline-block; width: 9px; border-radius: 4px;" title="<%= $metric->{key} %>">&nbsp;</span>
+<tr><td>
+%   if (defined $dist->{kwalitee}{kwalitee}) {
+<a href="/dist/<%= $dist->{dist} %>" title="version <%= $dist->{version} %> (released on <%= $dist->{released} %>)"><%= $dist->{dist} %></a>
+%   } else {
+<%= $dist->{dist} %>
 %   }
-% }
+</td><td>
+%   if (defined $dist->{kwalitee}{kwalitee}) {
+<%= sprintf('%3.3f', $dist->{kwalitee}{kwalitee}) %>
+%   }
+</td><td>
+%   if (defined $dist->{kwalitee}{kwalitee}) {
+%     for my $metric (@{ $dist->{metrics} || [] }) {
+<span style="background-color: <%= $metric->{value} ? 'green' : $metric->{is_extra} ? 'orange' : 'red' %>; display: inline-block; width: 9px; border-radius: 4px;" title="<%= $metric->{key} %>">&nbsp;</span>
+%     }
+%   }
 </td></tr>
 % }
 </tbody>
