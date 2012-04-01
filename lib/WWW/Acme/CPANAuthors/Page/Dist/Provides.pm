@@ -10,6 +10,8 @@ sub load_data {
   my ($class, $name) = @_;
 
   my $dist = db('CPANTS')->get_dist($name);
+  return unless $dist && $dist->{id};
+
   my $modules = db('CPANTS')->get_dist_modules_by_id($dist->{id});
 
   my %data = (

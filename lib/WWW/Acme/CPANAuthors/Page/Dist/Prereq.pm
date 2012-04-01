@@ -10,6 +10,8 @@ sub load_data {
   my ($class, $name) = @_;
 
   my $dist = db('CPANTS')->get_dist($name);
+  return unless $dist && $dist->{id};
+
   my $all_prereqs = db('CPANTS')->get_dist_prereqs_by_id($dist->{id});
   my $all_uses = db('CPANTS')->get_dist_uses_by_id($dist->{id});
   for (@$all_uses) {

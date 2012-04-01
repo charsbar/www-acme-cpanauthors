@@ -10,6 +10,8 @@ sub load_data {
   my ($class, $name) = @_;
 
   my $dist = db('CPANTS')->get_dist($name);
+  return unless $dist && $dist->{id};
+
   my $meta = db('CPANTS')->get_dist_errors_by_id($dist->{id});
   delete $meta->{$_} for qw/id dist/;
   for (keys %$dist) {

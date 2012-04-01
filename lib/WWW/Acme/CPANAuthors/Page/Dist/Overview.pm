@@ -10,6 +10,8 @@ sub load_data {
   my ($class, $name) = @_;
 
   my $dist = db('CPANTS')->get_dist($name);
+  return unless $dist && $dist->{id};
+
   my $kwalitee = db('CPANTS')->get_dist_kwalitee_by_id($dist->{id});
 
   my %kwalitees;
