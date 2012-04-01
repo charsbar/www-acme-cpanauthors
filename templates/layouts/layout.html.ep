@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--[if lt IE 9]>
+%= javascript "/js/html5shiv.js";
+<![endif]-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Unofficial Acme CPAN Authors Statistics</title>
+%# 
+%# ------ CSS Stylesheets --------
+%# 
+%= stylesheet "/css/bootstrap.css";
+%= stylesheet "/css/bootstrap-responsive.css";
+%  if (stash('requires_tablesorter')) {
+%=   stylesheet "/css/tablesorter/style.css";
+%  }
+%= stylesheet "/css/docs.css";
+%# 
+%# ------ JavaScripts --------
+%# 
+%= javascript "/js/jquery.js";
+%= javascript "/js/bootstrap.js";
+%  if (stash('requires_tablesorter')) {
+%=   javascript "/js/jquery.metadata.js";
+%=   javascript "/js/jquery.tablesorter.js";
+%  }
+%  if (stash('requires_highcharts')) {
+%=   javascript "/js/highcharts.src.js";
+%  }
+%= javascript '/js/acme_cpanauthors.js';
+<script>
+var acme; $(function() { acme = new AcmeCPANAuthors });
+</script>
+</head>
+<body>
+<div id="navbar" class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a href="/" class="brand">Acme::CPANAuthors</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li><a href="/modules">Acme::CPANAuthors Modules</a></li>
+          <li><a href="/authors">CPAN Authors</a></li>
+          <li><a href="/dists">CPAN Distributions</a></li>
+          <li><a href="/kwalitee">What's Kwalitee?</a></li>
+          <li><a href="/ranking">Rankings</a></li>
+          <li><a href="/resources">Resources</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div id="main" class="span11">
+      <%== content %>
+    </div>
+    <div id="footer" class="span11">
+      <address>Site maintained by Kenichi Ishigaki &lt;ishigaki@cpan.org&gt;</address>
+    </div>
+  </div>
+</div>
+% if (stash('requires_tablesorter')) {
+<script>
+$(function(){ acme.init_tablesorter() });
+</script>
+% }
+</body>
+</html>

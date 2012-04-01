@@ -1,0 +1,28 @@
+% layout 'layout';
+<div class="page-header">
+<h1><%= $basename %> CPAN Authors</h1>
+
+<p>There are <%= $num_of_authors %> people in this list. If you are not listed, or wrongly listed, please inform the maintainer of the module via <a href="https://rt.cpan.org/Public/Dist/Display.html?Name=<%= $package %>">RT</a>, or any other approriate measures.</p>
+</div>
+
+<section>
+<p style="text-align:right">
+<a href="#" onclick="hide_less_than(1); return false;">hide authors without modules</a> /
+<a href="#" onclick="hide_less_than(5); return false;">hide authors with less than 5 modules</a> /
+<a href="#" onclick="show_all(); return false;">show everyone</a>
+</p>
+<table id="<%= $category_id %>" class="tablesorter table-bordered table-condensed table-striped">
+<thead>
+<tr><th>Pause ID</th><th>Name</th><th>number of modules</th><th>num of recent mods</th><th>kwalitee for the game</th><th>total kwalitee</th><th>see also</th></tr>
+</thead>
+<tbody>
+% for (@$authors) {
+<tr><td><a href="/author/<%= $_->{pauseid} %>"><%= $_->{pauseid} %></a></td><td><%= $_->{name} %></td><td class="number"><%= $_->{num_dists} || 0 %></td><td class="number"><%= $_->{num_recent_dists} || 0 %></td><td class="number"><%= $_->{average_kwalitee} || 0 %></td><td class="number"><%= $_->{average_total_kwalitee} || 0 %></td><td><a href="http://cpants.charsbar.org/author/<%= $_->{pauseid} %>">details</a> / <a href="http://metacpan.org/author/<%= $_->{pauseid} %>">CPAN</a></td></tr>
+% }
+</tbody>
+</table>
+</section>
+<script>
+function hide_less_than(max){show_all();$("#<%= $category_id %> > tbody > tr").filter(function(i){return $(this).find(':eq(3)').text() < max}).hide()}
+function show_all(){$("#<%= $category_id %> > tbody > tr").show()}
+</script>

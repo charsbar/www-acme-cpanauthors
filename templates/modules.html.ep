@@ -1,0 +1,51 @@
+% layout 'layout';
+<div class="page-header">
+<h1>Acme::CPANAuthors modules</h1>
+
+<p>There are <%= $num_of_modules %> Acme::CPANAuthors modules, and a few more which don't list authors (including Acme::CPANAuthors::Not).</p>
+</div>
+
+<section>
+<h2>Regional Groups</h2>
+<table id="regional" class="tablesorter table-bordered table-striped table-condensed">
+<thead>
+<tr><th>Module Name</th><th>Version</th><th>Authors</th><th>Active Authors<sup>(*1)</sup></th><th>Population</th><th>Authors/Pop. Ratio<br />(per million)</th><th class="{sorter:'integer'}">Distributions</th><th>Average Kwalitee</th></tr>
+</thead>
+<tbody>
+% for my $module (@$regional_modules) {
+<tr>
+<td><a href="/for/<%= $module->{id} %>"><%= $module->{name} %></a></td>
+<td><%= $module->{version} %></td>
+<td class="number"><%= $module->{authors} %></td>
+<td class="number"><%= $module->{actives} %></td>
+<td class="number"><%= $module->{population} %></td>
+<td class="number"><%= $module->{ratio} %></td>
+<td class="number"><%= $module->{dists} %> (<%= $module->{dists_ratio} %>%)</td>
+<td class="number"><%= $module->{average_kwalitee} %></td>
+</tr>
+% }
+</tbody>
+</table>
+<p>*1 those who have released/updated at least one distribution on the CPAN in the past 365 days.</p> 
+</section>
+
+<section>
+<h2>Non Regional Groups</h2>
+
+<table id="non_regional" class="tablesorter table-bordered table-striped table-condensed">
+<thead>
+<tr><th>Module Name</th><th>Version</th><th>Authors</th><th>Distributions</th><th>Average Kwalitee</th></tr>
+</thead>
+<tbody>
+% for my $module (@$non_regional_modules) {
+<tr>
+<td><a href="/for/<%= $module->{id} %>"><%= $module->{name} %></a></td>
+<td><%= $module->{version} %></td>
+<td class="number"><%= $module->{authors} %></td>
+<td class="number"><%= $module->{dists} %></td>
+<td class="number"><%= $module->{average_kwalitee} %></td>
+</tr>
+% }
+</tbody>
+</table>
+</section>

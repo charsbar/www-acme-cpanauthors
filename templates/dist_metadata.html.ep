@@ -1,0 +1,49 @@
+% layout 'layout';
+% my $dist = stash('dist') || {};
+% my $distname = $dist->{dist};
+% my $meta = stash('meta') || {};
+<div class="page-header">
+<h1><%= $distname %></h1>
+
+<div class="subnav">
+<ul class="nav nav-pills">
+<li><a href="/dist/<%= $distname %>">Overview</a></li>
+<li><a href="/dist/<%= $distname %>/prereq">Prerequisites</a></li>
+<li><a href="/dist/<%= $distname %>/used_by">Used by</a></li>
+<li><a href="/dist/<%= $distname %>/provides">Provides</a></li>
+<li class="active"><a href="/dist/<%= $distname %>/metadata">Metadata</a></li>
+</ul>
+</div>
+
+</div>
+
+<section>
+<h2>Metadata</h2>
+
+<p class="section-lead">Analyzed metadata and errors of <%= $distname %>.</p>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<thead>
+<tr><th>key</th><th>value</th></tr>
+</thead>
+<tbody>
+% for my $key (sort keys %$meta) {
+<tr>
+<td><%= $key %></td>
+<td>
+% if (($key =~ /_list$/ or $key eq 'has_version_in_each_file') and defined $meta->{$key}) {
+<ul>
+%   for my $i (sort split /\s*[,;]\s*/, $meta->{$key}) {
+<li><%= $i %></li>
+%   }
+</ul>
+% } else {
+<%= $meta->{$key} %>
+% }
+</td>
+</tr>
+% }
+</tbody>
+</table>
+
+</section>

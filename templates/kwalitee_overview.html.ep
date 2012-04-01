@@ -1,0 +1,60 @@
+% layout 'layout';
+% my $core = stash('core') || [];
+% my $extra = stash('extra') || [];
+% my $count = stash('count') || [];
+<div class="page-header">
+<h1>What's "Kwalitee"?</h1>
+
+<p class="section-lead">"Kwalitee" is something that looks like quality, sounds like quality, but is not quite quality.</p>
+</div>
+
+<section>
+<h2>Kwalitee indicators</h2>
+
+<p class="section-lead">We have <%= scalar @$core %> Kwalitee indicators, and <%= scalar @$extra %> optional indicators as well.</p>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<caption>Core indicators</caption>
+<thead>
+<tr><th>Name</th><th>Description</th><th>Remedy</th><th>Fails</th></tr>
+</thead>
+<tbody>
+% for my $indicator (@$core) {
+<tr>
+<td><%= $indicator->{name} %></td>
+<td><%= $indicator->{error} %></td>
+<td><%= $indicator->{remedy} %></td>
+<td><%= $indicator->{num_fails} %></td>
+</tr>
+% }
+</tbody>
+</table>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<caption>Optional indicators</caption>
+<thead>
+<tr><th>Name</th><th>Description</th><th>Remedy</th><th>Fails</th></tr>
+</thead>
+<tbody>
+% for my $indicator (@$extra) {
+<tr>
+<td><%= $indicator->{name} %></td>
+<td><%= $indicator->{error} %></td>
+<td><%= $indicator->{remedy} %></td>
+<td><%= $indicator->{num_fails} %></td>
+</tr>
+% }
+</tbody>
+</table>
+
+</section>
+
+<section>
+<div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+</section>
+<script>
+$(function(){
+  var chart = acme.init_columnchart('chart');
+  acme.load_chart(chart, '/api/chart/kwalitee/overview');
+});
+</script>

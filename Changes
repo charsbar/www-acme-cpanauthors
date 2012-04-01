@@ -1,0 +1,10 @@
+2012/04/01
+  - Refactored (Perl QA Hackathon 2012)
+  - Started to provide lots of CPANTS Kwalitee information
+    (as a proof of concept for the next overhaul of the CPANTS site)
+  - Switched from YAML to Twitter Bootstrap
+  - Highcharts graphs (any better alternatives?)
+
+2011/10/15
+  - First public version (announced at YAPC::Asia 2011)
+    (source code of this version is not disclosed)

@@ -1,0 +1,24 @@
+% layout 'layout';
+<div class="page-header">
+<h1>Reources</h1>
+
+<p>This site uses the following as data sources:</p>
+</div>
+
+<section>
+<ul>
+<li>Acme::CPANAuthors modules (&raquo; <a href="http://search.cpan.org/search?query=Acme%3A%3ACPANAuthors&mode=all">search CPAN</a>)</li>
+<li>CPAN indices (01mailrc.txt.gz, 02packages.details.txt.gz)</li>
+<li><a href="http://devel.cpantesters.org/#database">CPAN Testers Upload Database</a></li>
+<li><a href="http://en.wikipedia.org/wiki/List_of_countries_by_population">Wikipedia, List of countries by population</a></li>
+</ul>
+</section>
+
+<section>
+<h2>What's Acme?</h2>
+
+<ul>
+<li><a href="http://use.perl.org/~acme/journal/200">use Perl; Journal of acme</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Acme_Corporation">Wikipedia, Acme Corporation</a></li>
+</ul>
+</section>

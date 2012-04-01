@@ -1,0 +1,35 @@
+% layout 'layout';
+% my $dist = stash('dist') || {};
+% my $distname = $dist->{dist};
+% my $modules = stash('modules') || [];
+<div class="page-header">
+<h1><%= $distname %></h1>
+
+<div class="subnav">
+<ul class="nav nav-pills">
+<li><a href="/dist/<%= $distname %>">Overview</a></li>
+<li><a href="/dist/<%= $distname %>/prereq">Prerequisites</a></li>
+<li><a href="/dist/<%= $distname %>/used_by">Used by</a></li>
+<li class="active"><a href="/dist/<%= $distname %>/provides">Provides</a></li>
+<li><a href="/dist/<%= $distname %>/metadata">Metadata</a></li>
+</ul>
+</div>
+
+</div>
+
+<section>
+<h2>Provides</h2>
+
+<p class="section-lead"><%= $distname %> provides the following <%= scalar @$modules %> module(s) as of version <%= $dist->{version} %>.</p>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<thead>
+<tr><th>Module</th><th>Links to metacpan.org</th></tr>
+</thead>
+<tbody>
+% for my $module (@$modules) {
+<tr><td><%= $module->{module} %></td><td><a href="https://metacpan.org/module/<%= $module->{module} %>">POD</a> / <a href="https://metacpan.org/source/<%= $dist->{author_pauseid} %>/<%= $dist->{vname} %>/<%= $module->{file} %>">source</a></td></tr>
+% }
+</tbody>
+</table>
+</section>

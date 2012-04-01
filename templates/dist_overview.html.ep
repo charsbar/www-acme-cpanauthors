@@ -1,0 +1,92 @@
+% layout 'layout';
+% my $dist = stash('dist') || {};
+% my $kwalitee = stash('kwalitee') || [];
+% my $history = stash('history') || [];
+% my $distname = $dist->{dist};
+<div class="page-header">
+<h1><%= $distname %></h1>
+
+<div class="subnav">
+<ul class="nav nav-pills">
+<li class="active"><a href="/dist/<%= $distname %>">Overview</a></li>
+<li><a href="/dist/<%= $distname %>/prereq">Prerequisites</a></li>
+<li><a href="/dist/<%= $distname %>/used_by">Used by</a></li>
+<li><a href="/dist/<%= $distname %>/provides">Provides</a></li>
+<li><a href="/dist/<%= $distname %>/metadata">Metadata</a></li>
+</ul>
+</div>
+
+</div>
+
+<section>
+<table class="table-bordered table-striped table-condensed">
+<tr><th>Latest Version</th><td><%= $dist->{version} %></td></tr>
+<tr><th>Released by</th><td><a href="/author/<%= lc $dist->{author_pauseid} %>"><%= $dist->{author_name} %> (<%= $dist->{author_pauseid} %>)</a></td></tr>
+<tr><th>Released on</th><td><%= ((split ' ', $dist->{released})[0]) %></td></tr>
+<tr><th>External Links</th><td>
+<ul class="unstyled">
+<li><a href="http://metacpan.org/release/<%= $distname %>">metacpan.org</a></li>
+<li><a href="http://search.cpan.org/dist/<%= $distname %>">search.cpan.org</a></li>
+<li><a href="http://rt.cpan.org/NoAuth/Bugs.html?Dist=<%= $distname %>">rt.cpan.org</a></li>
+<li><a href="http://www.cpantesters.org/distro/<%= substr($distname, 0, 1) %>/<%= $distname %>.html">www.cpantesters.org</a>
+<li><a href="http://cpanratings.perl.org/dist/<%= $distname %>">cpanratings.perl.org</a></li>
+</ul>
+</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Kwalitee</h2>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<thead>
+<tr><th>core metric</th><th>result</th></tr>
+</thead>
+<tbody>
+% for my $metric (@{$kwalitee->{core}}) {
+<tr><td><%= $metric->{name} %></td>
+<td>
+% if ($metric->{value}) {
+<p><span class="label label-success">PASS</span></p>
+% } else {
+<p><span class="label label-important">FAIL</span></p>
+<p><%= $metric->{error} %></p>
+<p><%= $metric->{remedy} %></p>
+% }
+</td></tr>
+% }
+</tbody>
+</table>
+
+<table class="tablesorter table-condensed table-bordered table-striped">
+<thead>
+<tr><th>extra metric</th><th>result</th></tr>
+</thead>
+<tbody>
+% for my $metric (@{$kwalitee->{extra}}) {
+<tr><td><%= $metric->{name} %></td>
+<td>
+% if ($metric->{value}) {
+<p><span class="label label-success">PASS</span></p>
+% } else {
+<p><span class="label label-warning">FAIL</span></p>
+<p><%= $metric->{error} %></p>
+<p><%= $metric->{remedy} %></p>
+% }
+</td></tr>
+% }
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>History</h2>
+<div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+</section>
+<script>
+$(function(){
+  var chart = acme.init_linechart('chart');
+  acme.load_chart(chart, '/api/chart/dist/<%= $dist->{dist} %>');
+});
+</script>
+</section>

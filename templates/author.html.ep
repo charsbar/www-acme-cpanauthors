@@ -1,0 +1,66 @@
+% layout 'layout';
+% my $author_info = stash('author_info') || {};
+% my $author_kwalitee_info = stash('author_kwalitee_info') || {};
+<div class="page-header">
+<h1><%= $author_info->{name} %> (<%= uc $id %>)</h1>
+</div>
+
+<section>
+<table class="table-bordered table-striped table-condensed">
+<tr><th>Listed In</th><td>
+<ul class="unstyled">
+% for (@{$author_info->{listed} || []}) {
+<li><a href="/for/<%= $_->{category_id} %>"><%= $_->{category} %></a></li>
+% }
+</ul>
+</td></tr>
+% if ($author_kwalitee_info->{average_total_kwalitee}) {
+<tr><th>Average Kwalitee</th><td><%= $author_kwalitee_info->{average_total_kwalitee} %></td></tr>
+% }
+% if ($author_kwalitee_info->{average_kwalitee}) {
+<tr><th>Kwalitee For Ranking</th><td><%= $author_kwalitee_info->{average_kwalitee} %></td></tr>
+% }
+% if ($author_kwalitee_info->{rank}) {
+%   my $num_dists = $author_kwalitee_info->{num_dists};
+<tr><th>Rank (Liga: <%== $num_dists >= 5 ? qq{<a href="/ranking/five_or_more">5 or more</a>} : qq{<a href="/ranking/less_than_five">less than 5</a>} %>)</th><td><%= $author_kwalitee_info->{rank} %></td></tr>
+% }
+<tr><th>External Links</th><td>
+<ul class="unstyled">
+<li><a href="http://metacpan.org/author/<%= uc $id %>">metacpan.org</a>
+<li><a href="http://search.cpan.org/~<%= lc $id %>">search.cpan.org</a>
+<li><a href="http://www.cpantesters.org/author/<%= uc substr($id, 0, 1) %>/<%= uc $id %>.html">www.cpantesters.org</a></li>
+<ul>
+</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Distributions</h2>
+<table id="distributions" class="tablesorter table-condensed table-bordered table-striped">
+<thead>
+<tr><th>name</th><th>kwalitee</th><th class="{sorter:false}">metrics</th></tr>
+</thead>
+<tbody>
+% for my $dist (@{$dists}) {
+<tr><td><a href="/dist/<%= $dist->{dist} %>" title="version <%= $dist->{version} %> (released on <%= $dist->{released} %>)"><%= $dist->{dist} %></a></td><td><%= defined $dist->{kwalitee}{kwalitee} ? sprintf('%3.3f', $dist->{kwalitee}{kwalitee}) : '' %></td><td>
+% if (defined $dist->{kwalitee}{kwalitee}) {
+%   for my $metric (@{ $dist->{metrics} || [] }) {
+<span style="background-color: <%= $metric->{value} ? 'green' : $metric->{is_extra} ? 'orange' : 'red' %>; display: inline-block; width: 9px; border-radius: 4px;" title="<%= $metric->{key} %>">&nbsp;</span>
+%   }
+% }
+</td></tr>
+% }
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>Activities</h2>
+<div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+</section>
+<script>
+$(function(){
+  var chart = acme.init_linechart('chart');
+  acme.load_chart(chart, '/api/chart/author/<%= lc $id %>');
+});
+</script>

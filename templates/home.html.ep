@@ -1,0 +1,22 @@
+% layout 'layout';
+<div class="page-header">
+<h1>acme.cpanauthors.org</h1>
+<p class="lead">Unofficial acme statistics on CPAN Authors</p>
+</div>
+
+<section>
+<div class="span10">
+<h2>About this site</h2>
+<p>This site provides you some unofficial acme statistics on CPAN authors, based on Acme::CPANAuthors modules and various CPAN databases (&raquo; <a href="/resources">resources</a>).</p>
+
+<p>Acme::CPANAuthors modules contain various user-defined lists of CPAN authors. They are loosely grouped by countries, or other criteria for fun and interest.</p>
+
+<p>There are <%= $num_of_modules %> Acme::CPANAuthors modules (&raquo; <a href="/modules">list</a>), and <%= $num_of_listed_authors %> authors are listed in one or more of them (<%= $listed_authors_percentage %> percent of <%= $num_of_all_authors %> authors). Among them, <%= $num_of_listed_active_authors %> authors have released or updated one or more CPAN modules in the past 365 days (<%= $listed_active_authors_percentage %> percent of <%= $num_of_all_active_authors %> active authors).</p>
+
+<p>The largest known regional group (except EU) is <%= $largest_group_name %>, which has <%= $num_of_largest_group_authors %> CPAN authors, followed by <%= $second_largest_group_name %> with <%= $num_of_second_largest_group_authors %> authors. The group with the highest author/population ratio is <%= $highest_ratio_group %> (<%= $highest_ratio %> per million of <%= $population_with_the_highest_ratio %> people there are CPAN authors).</p>
+
+<p>Note that these are Acme modules. There is nothing that represents CPAN authors in the United States yet (which should be the largest by far -- maybe too large to maintain by a person); and Dutch people claim they don't do perl (in perl).</p>
+
+<p>Have fun!</p>
+</div>
+</section>

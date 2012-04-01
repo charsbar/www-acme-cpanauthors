@@ -1,0 +1,35 @@
+% layout 'layout';
+<div class="page-header">
+<h2>YAPC::Asia <%= $year %> Speakers from abroad</h2>
+
+<p>There are <%= $num_of_authors %> people in this list.</p>
+</div>
+
+<section>
+<p>
+% for my $y (2006 .. 2011) {
+<a href="/yapcasia/<%= $y %>"><%= $y %></a>
+% }
+<a href="/yapcasia">all</a>
+</p>
+
+<p style="text-align:right">
+<a href="#" onclick="javascript: hide_less_than(1); return false;">hide authors without modules</a> /
+<a href="#" onclick="javascript: hide_less_than(5); return false;">hide authors with less than 5 modules</a> /
+<a href="#" onclick="javascript: show_all(); return false;">show everyone</a>
+</p>
+<table id="yapcasia<%= $year %>" class="tablesorter">
+<thead>
+<tr><th>Pause ID</th><th>Name</th><th>number of modules</th><th>num of recent mods</th><th>kwalitee for the game</th><th>total kwalitee</th><th>see also</th></tr>
+</thead>
+<tbody>
+% for (@$authors) {
+<tr><td><%= $_->{pauseid} %></td><td><%= $_->{name} %></td><td class="number"><%= $_->{num_dists} || 0 %></td><td class="number"><%= $_->{num_recent_dists} || 0 %></td><td class="number"><%= $_->{average_kwalitee} || 0 %></td><td class="number"><%= $_->{average_total_kwalitee} || 0 %></td><td><a href="http://cpants.charsbar.org/author/<%= $_->{pauseid} %>">details</a> / <a href="http://metacpan.org/author/<%= $_->{pauseid} %>">CPAN</a></td></tr>
+% }
+</tbody>
+</table>
+</section>
+<script>
+function hide_less_than(max){show_all();$("#yapcasia<%= $year %> > tbody > tr").filter(function(i){return $(this).find(':eq(2)').text() < max}).hide(); }
+function show_all(){$("#yapcasia<%= $year %> > tbody > tr").show(); }
+</script>

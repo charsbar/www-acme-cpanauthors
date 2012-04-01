@@ -1,0 +1,10 @@
+*.bak
+*.old
+MYMETA.*
+Makefile
+acme_libs/
+blib/
+data/
+db/
+pm_to_blib
+cover_db/
