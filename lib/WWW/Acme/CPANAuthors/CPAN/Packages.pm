@@ -3,6 +3,8 @@ package WWW::Acme::CPANAuthors::CPAN::Packages;
 use strict;
 use warnings;
 use base 'WWW::Acme::CPANAuthors::CPAN::Index';
+use CPAN::DistnameInfo;
+use CPAN::Version;
 
 sub id { 'modules/02packages.details.txt' }
 
@@ -19,6 +21,26 @@ sub _parse {
     my ($package, $version, $tarball) = split /\s+/, $line, 3;
     $callback->($package, $version, $tarball, $line) or next;
   }
+}
+
+sub register {
+  my ($class, $db) = @_;
+
+  # TODO: see what PAUSE actually does.
+  my %dists;
+  $class->parse(sub {
+    my ($package, $version, $tarball, $line) = @_;
+    my $dist = CPAN::DistnameInfo->new($tarball);
+    my $name = $dist->dist;
+    unless ($name) {
+      # warn "DISTNAME NOT FOUND: $tarball\n";
+      return;
+    }
+    if (!$dists{$name} or CPAN::Version->vgt($dist->version, $dists{$name}[1])) {
+      $dists{$name} = [$name, $dist->version, $dist->cpanid, $tarball];
+    }
+  });
+  $db->register_packages([values %dists]);
 }
 
 1;

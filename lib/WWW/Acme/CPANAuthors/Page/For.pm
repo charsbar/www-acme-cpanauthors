@@ -26,9 +26,9 @@ sub create_data {
 
     $mapping{$_->{pauseid}} = $_ for @$kwalitee_list;
 
-    my $dists  = db('Uploads')->count_dists_by(\@pauseids);
+    my $dists  = db('CPAN')->count_dists_by(\@pauseids);
     for (@$dists) {
-      $mapping{$_->{author}}{num_dists} = $_->{count};
+      $mapping{$_->{pause_id}}{num_dists} = $_->{count};
     }
     my $recent = db('Uploads')->count_recent_dists_by(\@pauseids);
     for (@$recent) {

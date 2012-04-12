@@ -11,7 +11,7 @@ sub load_data {
 
   my $author_info = db('CPAN')->get_author_info($id) or return;
   my $author_kwalitee_info = db('CPANTS')->get_author_kwalitee($id);
-  my $dists = db('Uploads')->dists_by($id);
+  my $dists = db('CPAN')->get_dists($id);
   my $kwalitee_list = db('CPANTS')->get_dist_kwalitee_list([map {$_->{dist}} @$dists]);
 
   my %kwalitee_map;

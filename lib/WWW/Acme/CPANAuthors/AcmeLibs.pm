@@ -63,7 +63,7 @@ sub register {
     my $version = $package->VERSION;
     my $authors = $package->authors;
 
-    $db->register_package($id, $package, $version, $authors);
+    $db->register_acme_package($id, $package, $version, $authors);
 
     Class::Unload->unload($package);
   });

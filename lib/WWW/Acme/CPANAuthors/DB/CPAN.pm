@@ -11,6 +11,16 @@ create table if not exists cpan_authors (
   name text
 );
 
+create table if not exists cpan_packages (
+  dist text primary key not null,
+  version text,
+  pause_id text,
+  file text
+);
+
+create index if not exists cpan_packages_pause_idx
+  on cpan_packages (pause_id);
+
 create table if not exists mappings (
   pause_id text not null,
   category_id text not null
@@ -37,6 +47,9 @@ sub setup_and_register {
 
   require WWW::Acme::CPANAuthors::CPAN::Mailrc;
   WWW::Acme::CPANAuthors::CPAN::Mailrc->register($self);
+
+  require WWW::Acme::CPANAuthors::CPAN::Packages;
+  WWW::Acme::CPANAuthors::CPAN::Packages->register($self);
 
   require WWW::Acme::CPANAuthors::AcmeLibs;
   WWW::Acme::CPANAuthors::AcmeLibs->register($self);
@@ -118,13 +131,37 @@ sub get_categories {
   $self->fetchall('select * from categories order by category_id');
 }
 
+sub get_dists {
+  my ($self, $id) = @_;
+  my $sql = "select dist, version, pause_id from cpan_packages where pause_id = ? order by dist";
+  $self->fetchall($sql, $id);
+}
+
+sub count_dists_by {
+  my ($self, $authors) = @_;
+
+  my $sql = "select pause_id, count(distinct(dist)) as count from cpan_packages";
+  if ($authors) {
+    my $params = $self->in_params($authors);
+    $sql .= " where pause_id in ($params)";
+  }
+  $sql .= " group by pause_id";
+  $self->fetchall($sql);
+}
+
 sub register_authors {
   my ($self, $authors) = @_;
 
   $self->bulk('insert or replace into cpan_authors values (?,?)', $authors);
 }
 
-sub register_package {
+sub register_packages {
+  my ($self, $packages) = @_;
+
+  $self->bulk('insert or replace into cpan_packages values (?,?,?,?)', $packages);
+}
+
+sub register_acme_package {
   my ($self, $category_id, $package, $version, $authors) = @_;
 
   my $id = $self->fetch_1('select category_id from categories where category_id = ? and version = ?', $category_id, $version);
